@@ -9,31 +9,31 @@ namespace Paises.Controllers
     // [Produces("application/json")]
     public class PaisesController : ControllerBase
     {
-        private readonly string _paisesUrl;
-        private readonly string _campos;
+        private readonly string _baseUrl;
+        private readonly string _fields;
 
         public PaisesController()
         {
-            _paisesUrl = $"https://restcountries.com/v3.1/";
-           // _campos = "?fields=name,capital,population,flags";
-            _campos = "";
+            _baseUrl = $"https://restcountries.com/v3.1/";
+            // _fields = "?fields=name,capital,population,flags";
+            _fields = "";
         }
 
         // api/paises
         [HttpGet]
         public Task<ActionResult> Get(){
-            string buscar = "all"+ _campos;
-            return obtenerPaises(buscar);
+            string search = "all"+ _fields;
+            return obtenerPaises(search);
         }
 
         // api/paises/name/chile
-        [HttpGet("name/{pais}")]
-        public Task<ActionResult> Get([FromRoute]string pais = ""){
-            if (pais == "") {
+        [HttpGet("name/{country}")]
+        public Task<ActionResult> Get([FromRoute]string country = ""){
+            if (country == "") {
                 throw new HttpException(400, "Bad Request");
             }
-            string buscar = "name/"+ pais+ _campos;
-            return obtenerPaises(buscar);
+            string search = "name/"+ country + _fields;
+            return obtenerPaises(search);
         }
 
         // api/paises/capital/santiago
@@ -42,12 +42,24 @@ namespace Paises.Controllers
             if (capital == ""){
                 throw new HttpException(400, "Bad Request");
             }
-            string buscar = "capital/" + capital + _campos;
-            return obtenerPaises(buscar);
+            string search = "capital/" + capital + _fields;
+            return obtenerPaises(search);
         }
 
-        private async Task<ActionResult> obtenerPaises(string buscar) {
-            var request = (HttpWebRequest)WebRequest.Create(_paisesUrl + buscar);
+        // api/paises/codigo/cl
+        [HttpGet("code/{code}")]
+        public Task<ActionResult> GetCountry([FromRoute] string code = "")
+        {
+            if (code == "")
+            {
+                throw new HttpException(400, "Bad Request");
+            }
+            string search = "alpha/" + code + _fields;
+            return obtenerPaises(search);
+        }
+
+        private async Task<ActionResult> obtenerPaises(string search) {
+            var request = (HttpWebRequest)WebRequest.Create(_baseUrl + search);
             request.Method = "GET";
             request.ContentType = "application/json";
             request.Accept = "application/json";
