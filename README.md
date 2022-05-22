@@ -5,13 +5,17 @@ Este api es un servicio wrapper de https://restcountries.com/ ,creado para ser c
 los 3 metodos principales con los siguiente
 
 GET
-/api/paises
+https://paises20220521165936.azurewebsites.net/api/paises
 
 GET
-/api/paises/name/{pais}
+https://paises20220521165936.azurewebsites.net/api/paises/name/{pais}
 
 GET
-/api/paises/capital/{capital}
+https://paises20220521165936.azurewebsites.net/api/paises/capital/{capital}
+
+GET
+https://paises20220521165936.azurewebsites.net/api/paises/code/{code}
+
 
 para más detalles facil consultar swagger
 https://paises20220521165936.azurewebsites.net/swagger/index.html
