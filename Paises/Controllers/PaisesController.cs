@@ -15,7 +15,8 @@ namespace Paises.Controllers
         public PaisesController()
         {
             _paisesUrl = $"https://restcountries.com/v3.1/";
-            _campos = "?fields=name,capital,population,flags";
+           // _campos = "?fields=name,capital,population,flags";
+            _campos = "";
         }
 
         // api/paises
@@ -25,9 +26,9 @@ namespace Paises.Controllers
             return obtenerPaises(buscar);
         }
 
-        // api/paises/pais/chile
-        [HttpGet("pais/{pais}")]
-        public   Task<ActionResult> Get([FromRoute]string pais = ""){
+        // api/paises/name/chile
+        [HttpGet("name/{pais}")]
+        public Task<ActionResult> Get([FromRoute]string pais = ""){
             if (pais == "") {
                 throw new HttpException(400, "Bad Request");
             }
@@ -38,14 +39,14 @@ namespace Paises.Controllers
         // api/paises/capital/santiago
         [HttpGet("capital/{capital}")]
         public Task<ActionResult> GetCapital([FromRoute] string capital = ""){
-                if (capital == ""){
-                    throw new HttpException(400, "Bad Request");
-                }
+            if (capital == ""){
+                throw new HttpException(400, "Bad Request");
+            }
             string buscar = "capital/" + capital + _campos;
             return obtenerPaises(buscar);
         }
 
-        public async Task<ActionResult> obtenerPaises(string buscar) {
+        private async Task<ActionResult> obtenerPaises(string buscar) {
             var request = (HttpWebRequest)WebRequest.Create(_paisesUrl + buscar);
             request.Method = "GET";
             request.ContentType = "application/json";
@@ -64,5 +65,7 @@ namespace Paises.Controllers
                 return Ok(ex);
             }
         }
+
+
     }
 }
